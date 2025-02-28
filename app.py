@@ -9,10 +9,10 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpoint
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
-
+import os
 load_dotenv()
 
-
+hf_api_token = os.getenv("HUGGINGFACE_API_KEY")
 def get_vectorstore(url):
     # Get the url text
     loader = WebBaseLoader(url)
@@ -30,7 +30,7 @@ def get_vectorstore(url):
 
 def get_context_retriever_chain(vector_store):
     model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.5)
+    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.5, huggingfacehub_api_token=hf_api_token)
     
     retriever = vector_store.as_retriever()
     
@@ -44,7 +44,7 @@ def get_context_retriever_chain(vector_store):
 
 def get_conversation_rag_chain(retrieved_chain):
     model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.5)
+    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.5, huggingfacehub_api_token=hf_api_token)
     
     prompt = ChatPromptTemplate.from_messages([
         ("system", """Answer ONLY the user's immediate question based on the context below. 
