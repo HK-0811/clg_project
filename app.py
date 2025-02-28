@@ -201,3 +201,4 @@ else:
             response = get_response(user_input)
             st.session_state.chat_history.append(HumanMessage(content=user_input))
             st.session_state.chat_history.append(AIMessage(content=response))
+            st.rerun()
