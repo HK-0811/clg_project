@@ -30,7 +30,7 @@ def get_vectorstore(url):
 
 def get_context_retriever_chain(vector_store):
     model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.5, huggingfacehub_api_token=hf_api_token)
+    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.2, huggingfacehub_api_token=hf_api_token)
     
     retriever = vector_store.as_retriever()
     
@@ -44,13 +44,11 @@ def get_context_retriever_chain(vector_store):
 
 def get_conversation_rag_chain(retrieved_chain):
     model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
-    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.5, huggingfacehub_api_token=hf_api_token)
+    llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.2, huggingfacehub_api_token=hf_api_token)
     
     prompt = ChatPromptTemplate.from_messages([
-        ("system", """Answer ONLY the user's immediate question based on the context below. 
-        Do not include any previous conversation or additional information. 
-        Keep the answer short and concise.
-        Do not prefix your response with 'AI:' or similar labels.
+        ("system", """Provide a brief, one-sentence answer to the user's question based on the context below. 
+        Do not include any additional information or context in your response.
         Context: {context}"""),
         ("human", "{input}")
     ])
