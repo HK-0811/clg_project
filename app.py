@@ -43,7 +43,7 @@ def get_context_retriever_chain(vector_store):
     return create_history_aware_retriever(llm=llm, retriever=retriever, prompt=prompt)
 
 def get_conversation_rag_chain(retrieved_chain):
-    model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+    model_id = "meta-llama/Llama-3.2-3B-Instruct"
     llm = HuggingFaceEndpoint(repo_id=model_id, max_length=128, temperature=0.4, huggingfacehub_api_token=hf_api_token)
     
     prompt = ChatPromptTemplate.from_messages([
